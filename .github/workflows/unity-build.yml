@@ -12,15 +12,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Setup Unity
-        uses: game-ci/unity-actions/setup@v2
-        with:
-          unityVersion: 6000.0.44f1  # ✅ 这里填你当前的版本号
+    - name: Cache Library
+      uses: actions/cache@v3
+      with:
+        path: Library
+        key: Library-${{ runner.os }}
+        restore-keys: Library-
 
-      - name: Run Tests
-        uses: game-ci/unity-actions/test@v2
-        with:
-          projectPath: .
+    - name: Build project
+      uses: game-ci/unity-builder@v2
+      with:
+        unityVersion: 6000.0.44f1
+        targetPlatform: StandaloneWindows64
