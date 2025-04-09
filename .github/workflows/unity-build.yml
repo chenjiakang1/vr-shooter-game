@@ -1,0 +1,26 @@
+name: Unity Build Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build on Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Unity
+        uses: game-ci/unity-actions/setup@v2
+        with:
+          unityVersion: 6000.0.44f1  # ✅ 这里填你当前的版本号
+
+      - name: Run Tests
+        uses: game-ci/unity-actions/test@v2
+        with:
+          projectPath: .
