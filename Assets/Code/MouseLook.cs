@@ -12,7 +12,12 @@ public class MouseLook : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; // 隐藏并锁定鼠标
+#if UNITY_EDITOR
+        Cursor.lockState = CursorLockMode.Locked;
+#elif UNITY_ANDROID
+        // 在 VR 设备上运行时禁用本脚本
+        this.enabled = false;
+#endif
     }
 
     void Update()
@@ -30,4 +35,3 @@ public class MouseLook : MonoBehaviour
         playerBody.Rotate(Vector3.up * mouseX);
     }
 }
-
