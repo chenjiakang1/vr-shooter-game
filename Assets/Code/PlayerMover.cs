@@ -36,18 +36,13 @@ public class PlayerMover : MonoBehaviour
         Vector3 direction = forward * inputVector.y + right * inputVector.x;
         direction.Normalize();
 
-        // 移动位置
+        // 移动角色
         Vector3 movement = direction * moveSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + movement);
 
-        // 控制朝向：仅在按 W（inputVector.y > 0）时调整朝向
-        if (direction != Vector3.zero && inputVector.y > 0)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f));
-        }
+        // ❌ 取消所有基于移动方向的角色旋转控制
 
-        // 控制动画参数
+        // 设置动画参数（如果需要）
         if (animator != null)
         {
             animator.SetFloat("Speed", direction.magnitude);

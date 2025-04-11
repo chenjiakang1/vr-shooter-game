@@ -1,22 +1,30 @@
 using UnityEngine;
+#if UNITY_XR_MANAGEMENT
+using UnityEngine.XR;
+#endif
 
 public class MouseLook : MonoBehaviour
 {
-    [Header("灵敏度")]
-    public float mouseSensitivity = 100f;
-
-    [Header("角色根节点（水平旋转）")]
     public Transform playerBody;
-
+    public float mouseSensitivity = 100f;
     private float xRotation = 0f;
 
     void Start()
     {
-#if UNITY_EDITOR
         Cursor.lockState = CursorLockMode.Locked;
-#elif UNITY_ANDROID
-        // 在 VR 设备上运行时禁用本脚本
-        this.enabled = false;
+
+        // ✅ 检测是否是 VR（如 Quest 系列），如果是就禁用本脚本
+#if UNITY_XR_MANAGEMENT
+        if (XRSettings.isDeviceActive)
+        {
+            string deviceName = XRSettings.loadedDeviceName.ToLower();
+            if (deviceName.Contains("oculus") || deviceName.Contains("meta") || deviceName.Contains("quest"))
+            {
+                Debug.Log("MouseLook disabled on VR headset: " + deviceName);
+                this.enabled = false;
+                return;
+            }
+        }
 #endif
     }
 
@@ -25,13 +33,13 @@ public class MouseLook : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        // 垂直旋转（摄像机上下）
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // 防止翻过头
-
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
-        // 水平旋转（角色整体旋转）
-        playerBody.Rotate(Vector3.up * mouseX);
+        if (Mathf.Abs(mouseX) > 0.01f)
+        {
+            playerBody.Rotate(Vector3.up * mouseX);
+        }
     }
 }
