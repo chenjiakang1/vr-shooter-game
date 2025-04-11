@@ -24,7 +24,7 @@ public class PlayerMover : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 计算摄像机前向和右向
+        // 计算摄像机前向和右向（忽略 y 轴）
         Vector3 forward = cameraTransform.forward;
         Vector3 right = cameraTransform.right;
         forward.y = 0;
@@ -40,17 +40,19 @@ public class PlayerMover : MonoBehaviour
         Vector3 movement = direction * moveSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + movement);
 
-        // 控制朝向
-        if (direction != Vector3.zero)
+        // 控制朝向：仅在按 W（inputVector.y > 0）时调整朝向
+        if (direction != Vector3.zero && inputVector.y > 0)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f));
         }
 
-        // 控制动画
+        // 控制动画参数
         if (animator != null)
         {
             animator.SetFloat("Speed", direction.magnitude);
+            animator.SetFloat("Vertical", inputVector.y);
+            animator.SetFloat("Horizontal", inputVector.x);
         }
     }
 }
