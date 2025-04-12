@@ -15,6 +15,9 @@ public class PlayerMover : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        // 限制刚体旋转，避免因碰撞而旋转角色
+        rb.freezeRotation = true;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -24,7 +27,7 @@ public class PlayerMover : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 计算摄像机前向和右向（忽略 y 轴）
+        // 计算基于摄像机方向的移动
         Vector3 forward = cameraTransform.forward;
         Vector3 right = cameraTransform.right;
         forward.y = 0;
@@ -32,22 +35,17 @@ public class PlayerMover : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        // 移动方向
         Vector3 direction = forward * inputVector.y + right * inputVector.x;
         direction.Normalize();
 
-        // 移动角色
-        Vector3 movement = direction * moveSpeed * Time.fixedDeltaTime;
-        rb.MovePosition(rb.position + movement);
+        // 使用刚体 velocity 控制移动，避免墙角挤偏
+        Vector3 velocity = direction * moveSpeed;
+        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
 
-        // ❌ 取消所有基于移动方向的角色旋转控制
-
-        // 设置动画参数（如果需要）
+        // 动画控制（只使用 Speed）
         if (animator != null)
         {
             animator.SetFloat("Speed", direction.magnitude);
-            animator.SetFloat("Vertical", inputVector.y);
-            animator.SetFloat("Horizontal", inputVector.x);
         }
     }
 }
