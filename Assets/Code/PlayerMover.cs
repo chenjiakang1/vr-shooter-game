@@ -5,45 +5,47 @@ using UnityEngine.InputSystem;
 public class PlayerMover : MonoBehaviour
 {
     [Header("移动设置")]
-    public float moveSpeed = 2f;
-    public float jumpForce = 20f;                // 跳跃力度
-    public Transform cameraTransform;
-    public Animator animator;
+    public float moveSpeed = 2f;  // 玩家移动速度
+    public Transform cameraTransform;  // 摄像机变换
+    public Animator animator;  // 动画控制器
 
-    private Rigidbody rb;
-    private Vector2 inputVector;
-    private bool isGrounded = true;             // 是否在地面
-    private bool jumpRequested = false;         // 是否请求跳跃
+    [Header("跳跃设置")]
+    public float JumpGravity = 500f;  // 跳跃重力
+    public float jumpForce = 10f;  // 跳跃初速度
+    public float groundCheckDistance = 0.1f;  // 地面检测距离
+    private Rigidbody rb;  // 刚体
+    private Vector2 inputVector;  // 玩家输入向量
+    private bool isGrounded;  // 玩家是否在地面上
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // 限制刚体旋转，避免因碰撞而旋转角色
+        rb.freezeRotation = true;  // 防止刚体旋转
     }
 
-    // 接收移动输入
     public void OnMove(InputAction.CallbackContext context)
     {
-        inputVector = context.ReadValue<Vector2>();
+        inputVector = context.ReadValue<Vector2>();  // 获取移动输入
     }
 
-    // 接收跳跃输入
-    public void OnJump(InputAction.CallbackContext context)
+    void Update()
     {
-        if (context.performed && isGrounded) // 确保只在按下瞬间跳跃
+        // 使用射线检测来判断是否在地面上
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance);
+
+        // 跳跃逻辑
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))  // 如果按下空格并且在地面上
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // 给刚体一个向上的力
-            isGrounded = false; // 设置为跳跃状态
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);  // 给刚体添加向上的速度
         }
     }
 
-    // 在 FixedUpdate 中处理物理计算
     void FixedUpdate()
     {
         // 计算基于摄像机方向的移动
         Vector3 forward = cameraTransform.forward;
         Vector3 right = cameraTransform.right;
-        forward.y = 0;  // 不考虑y轴的影响
+        forward.y = 0;
         right.y = 0;
         forward.Normalize();
         right.Normalize();
@@ -51,25 +53,15 @@ public class PlayerMover : MonoBehaviour
         Vector3 direction = forward * inputVector.y + right * inputVector.x;
         direction.Normalize();
 
-        // 使用刚体的 velocity 控制移动，避免墙角挤偏
+        // 使用刚体 velocity 控制移动，避免墙角挤偏
         Vector3 velocity = direction * moveSpeed;
-        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);  // 保持y轴速度，避免跳跃时改变速度
+        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);  // 控制刚体的速度
 
-        // 动画控制
+        // 动画控制（只使用 Speed）
         if (animator != null)
         {
             animator.SetFloat("Speed", direction.magnitude);
-            animator.SetBool("IsGrounded", isGrounded);  // 给跳跃动画用
-        }
-    }
-
-    // 碰撞检测，判断是否接触地面
-    private void OnCollisionEnter(Collision collision)
-    {
-        // 简单判断：只要碰到地面（标签为 Ground），就认为落地了
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
         }
     }
 }
+
