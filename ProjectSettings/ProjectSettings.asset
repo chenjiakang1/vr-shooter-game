@@ -855,11 +855,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: ffa4d09e-9dda-42dd-bee0-19f310dcc22d
+  cloudProjectId: 64293fdd-6d24-40e1-bd29-dcf8d11e370d
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: My project (1) 2025-03-30_01-42-31
-  organizationId: wechat_os_qy01zgkixxhhliwedakwcgnqu
+  projectName: vr-shooter-game
+  organizationId: wechat_os_qy061aioh6fsxicpahfmaajka
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
