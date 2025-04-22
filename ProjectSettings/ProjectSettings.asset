@@ -855,11 +855,19 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
+<<<<<<< HEAD
   cloudProjectId: ffa4d09e-9dda-42dd-bee0-19f310dcc22d
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: My project (1) 2025-03-30_01-42-31
   organizationId: wechat_os_qy01zgkixxhhliwedakwcgnqu
+=======
+  cloudProjectId: 64293fdd-6d24-40e1-bd29-dcf8d11e370d
+  framebufferDepthMemorylessMode: 0
+  qualitySettingsNames: []
+  projectName: vr-shooter-game
+  organizationId: wechat_os_qy061aioh6fsxicpahfmaajka
+>>>>>>> b783fc37acf99b0cc509bd5a2da119912d4f0ad2
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

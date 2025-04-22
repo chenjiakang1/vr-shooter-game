@@ -13,6 +13,7 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+<<<<<<< HEAD
                 },
                 {
                     "name": "jump",
@@ -22,6 +23,8 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+=======
+>>>>>>> b783fc37acf99b0cc509bd5a2da119912d4f0ad2
                 }
             ],
             "bindings": [
@@ -101,6 +104,7 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
+<<<<<<< HEAD
                 },
                 {
                     "name": "",
@@ -112,6 +116,8 @@
                     "action": "jump",
                     "isComposite": false,
                     "isPartOfComposite": false
+=======
+>>>>>>> b783fc37acf99b0cc509bd5a2da119912d4f0ad2
                 }
             ]
         }

@@ -6,10 +6,14 @@ public class PlayerMover : MonoBehaviour
 {
     [Header("移动设置")]
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b783fc37acf99b0cc509bd5a2da119912d4f0ad2
     public float moveSpeed = 2f;
     public Transform cameraTransform;
     public Animator animator;
 
+<<<<<<< HEAD
     [Header("跳跃设置")]
     public float JumpGravity = 500f;
     public float jumpForce = 10f;
@@ -31,19 +35,30 @@ public class PlayerMover : MonoBehaviour
     private Vector2 inputVector;  // 玩家输入向量
     private bool isGrounded;  // 玩家是否在地面上
 >>>>>>> huyufei
+=======
+    private Rigidbody rb;
+    private Vector2 inputVector;
+>>>>>>> b783fc37acf99b0cc509bd5a2da119912d4f0ad2
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 <<<<<<< HEAD
+<<<<<<< HEAD
         rb.freezeRotation = true;
 =======
         rb.freezeRotation = true;  // 防止刚体旋转
 >>>>>>> huyufei
+=======
+
+        // 限制刚体旋转，避免因碰撞而旋转角色
+        rb.freezeRotation = true;
+>>>>>>> b783fc37acf99b0cc509bd5a2da119912d4f0ad2
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
+<<<<<<< HEAD
         inputVector = context.ReadValue<Vector2>();  // 获取移动输入
     }
 
@@ -79,11 +94,18 @@ public class PlayerMover : MonoBehaviour
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);  // 给刚体添加向上的速度
 >>>>>>> huyufei
         }
+=======
+        inputVector = context.ReadValue<Vector2>();
+>>>>>>> b783fc37acf99b0cc509bd5a2da119912d4f0ad2
     }
 
     void FixedUpdate()
     {
+<<<<<<< HEAD
         // 摄像机方向移动
+=======
+        // 计算基于摄像机方向的移动
+>>>>>>> b783fc37acf99b0cc509bd5a2da119912d4f0ad2
         Vector3 forward = cameraTransform.forward;
         Vector3 right = cameraTransform.right;
         forward.y = 0;
@@ -94,6 +116,7 @@ public class PlayerMover : MonoBehaviour
         Vector3 direction = forward * inputVector.y + right * inputVector.x;
         direction.Normalize();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         // 移动速度设置
         Vector3 velocity = direction * moveSpeed;
@@ -107,15 +130,25 @@ public class PlayerMover : MonoBehaviour
 
         // 动画控制（只使用 Speed）
 >>>>>>> huyufei
+=======
+        // 使用刚体 velocity 控制移动，避免墙角挤偏
+        Vector3 velocity = direction * moveSpeed;
+        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
+
+        // 动画控制（只使用 Speed）
+>>>>>>> b783fc37acf99b0cc509bd5a2da119912d4f0ad2
         if (animator != null)
         {
             animator.SetFloat("Speed", direction.magnitude);
         }
     }
 }
+<<<<<<< HEAD
 
 
 <<<<<<< HEAD
 =======
 
 >>>>>>> huyufei
+=======
+>>>>>>> b783fc37acf99b0cc509bd5a2da119912d4f0ad2
