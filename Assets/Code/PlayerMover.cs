@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerMover : MonoBehaviour
 {
     [Header("移动设置")]
+<<<<<<< HEAD
     public float moveSpeed = 2f;
     public Transform cameraTransform;
     public Animator animator;
@@ -17,20 +18,38 @@ public class PlayerMover : MonoBehaviour
     private Rigidbody rb;
     private Vector2 inputVector;
     private bool isGrounded;
+=======
+    public float moveSpeed = 2f;  // 玩家移动速度
+    public Transform cameraTransform;  // 摄像机变换
+    public Animator animator;  // 动画控制器
+
+    [Header("跳跃设置")]
+    public float JumpGravity = 500f;  // 跳跃重力
+    public float jumpForce = 10f;  // 跳跃初速度
+    public float groundCheckDistance = 0.3f;  // 地面检测距离
+    private Rigidbody rb;  // 刚体
+    private Vector2 inputVector;  // 玩家输入向量
+    private bool isGrounded;  // 玩家是否在地面上
+>>>>>>> huyufei
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+<<<<<<< HEAD
         rb.freezeRotation = true;
+=======
+        rb.freezeRotation = true;  // 防止刚体旋转
+>>>>>>> huyufei
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        inputVector = context.ReadValue<Vector2>();
+        inputVector = context.ReadValue<Vector2>();  // 获取移动输入
     }
 
     void Update()
     {
+<<<<<<< HEAD
         // 地面检测
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance + 0.1f);
 
@@ -50,6 +69,15 @@ public class PlayerMover : MonoBehaviour
             {
                 animator.SetTrigger("Jump");
             }
+=======
+        // 使用射线检测来判断是否在地面上
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance);
+
+        // 跳跃逻辑
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))  // 如果按下空格并且在地面上
+        {
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);  // 给刚体添加向上的速度
+>>>>>>> huyufei
         }
     }
 
@@ -66,11 +94,19 @@ public class PlayerMover : MonoBehaviour
         Vector3 direction = forward * inputVector.y + right * inputVector.x;
         direction.Normalize();
 
+<<<<<<< HEAD
         // 移动速度设置
         Vector3 velocity = direction * moveSpeed;
         rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
 
         // 设置动画 Speed（控制 Idle / Run）
+=======
+        // 使用刚体 velocity 控制移动，避免墙角挤偏
+        Vector3 velocity = direction * moveSpeed;
+        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);  // 控制刚体的速度
+
+        // 动画控制（只使用 Speed）
+>>>>>>> huyufei
         if (animator != null)
         {
             animator.SetFloat("Speed", direction.magnitude);
@@ -79,3 +115,7 @@ public class PlayerMover : MonoBehaviour
 }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> huyufei
